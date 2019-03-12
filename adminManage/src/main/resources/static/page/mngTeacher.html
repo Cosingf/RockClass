@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Manage teacher info</title>
+
+    <!--js-->
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/general.js"></script>
+    <script type="text/javascript" src="../js/mngTeacher.js"></script>
+
+    <!--css-->
+    <link rel="stylesheet" type="text/css" href="../css/general.css">
+
+    <!--vue/element-->
+    <script src="https://cdn.bootcss.com/vue/2.5.18-beta.0/vue.js"></script>
+    <!-- 引入样式/组件库 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <div class="aside">
+        <div class="header">
+            翻转课堂管理平台
+        </div>
+        <div class="logOut">
+            <div class="logOutBtn" id="logOutBtn">
+                退出系统
+            </div>
+        </div>
+        <div class="menu" id="menu">
+            <el-menu
+                    default-active="1" class="el-menu-vertical-demo"
+                    @open="handleOpen" @close="handleClose"
+                    background-color="#8cb2ff" text-color="#fff"
+                    active-text-color="#545c64">
+                <el-menu-item index="1" id="mngTeacher">
+                    <span slot="title">管理教师信息</span>
+                </el-menu-item>
+                <el-menu-item index="2" id="mngStudent">
+                    <span slot="title">管理学生信息</span>
+                </el-menu-item>
+            </el-menu>
+        </div>
+    </div>
+    <div class="main">
+        <div class="header">
+            教师信息管理
+        </div>
+        <div class="searcher" id="searcher">
+            <input type="text" id="inputArea" placeholder="请输入教工号/姓名" class="inputArea">
+            <button class="searchBtn" id="searchBtn">搜索</button>
+            <button class="registerBtn" onclick="window.location.href='registerTeacher.html'">新建教师账号</button>
+        </div>
+        <div class="list">
+            <p>教师列表</p>
+            <div class="list-table">
+                <table id="teacher-list">
+                    <tr>
+                        <th>教工号</th>
+                        <th>姓名</th>
+                        <th>电子邮箱</th>
+                        <th></th>
+                    </tr>
+                    <tr id="tip">
+                        <td colspan="3">
+                            当前没有教师信息
+                        </td>
+                        <td></td>
+                    </tr>
+                </table>
+                <table id="search-teacher-list" style="display: none">
+                    <tr>
+                        <th>教工号</th>
+                        <th>姓名</th>
+                        <th>电子邮箱</th>
+                        <th></th>
+                    </tr>
+                    <tr id="tip1">
+                        <td colspan="3">
+                            找不到相应的教师
+                        </td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var menu = new Vue({
+        el: '#menu',
+        data: {
+        },
+        methods: {
+            handleOpen(key, keyPath) {
+                console.log(key, keyPath);
+            },
+            handleClose(key, keyPath) {
+                console.log(key, keyPath);
+            }
+        }
+    });
+
+    var searcher = new Vue({
+        el: '#searcher',
+        data: {
+            restaurants: [],
+            state: '',
+            timeout:  null
+        },
+        methods: {
+            loadAll() {
+                return [
+                    { "value": "邱明", "address": "8888888888" },
+                    { "value": "王美红", "address": "8888888889" }
+                ];
+            },
+            querySearchAsync(queryString, cb) {
+                var restaurants = this.restaurants;
+                var results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;
+
+                clearTimeout(this.timeout);
+                this.timeout = setTimeout(() => {
+                    cb(results);
+            }, 500 * Math.random());
+            },
+            createStateFilter(queryString) {
+                return (state) => {
+                    return (state.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+                };
+            },
+            handleSelect(item) {
+                console.log(item);
+            }
+        },
+        mounted() {
+            this.restaurants = this.loadAll();
+        }
+    });
+</script>
+
+</body>
+</html>
